@@ -8,6 +8,7 @@ all sort algorithm
 *********************************/
 
 #include <iostream>
+#include<stdlib.h>
 using namespace std;
 
 #define N 10 //数据长度
@@ -17,6 +18,7 @@ typedef struct elemtype
 {
     int key;
     int info;
+
 };
 
 //直接插入
@@ -154,11 +156,38 @@ void HeapSort(elemtype A[],int n){
 
 
 //归并排序
-void mergSort(){
-
+void Merge(elemtype A[], int low,int mid,int high){
+    elemtype B[N+1];
+    //elemtype *B = (elemtype*)malloc((N+1)*sizeof(elemtype));
+    //struct elemtype * B = new struct elemtype(N+1);
+    for(int kk=low;kk<=high;kk++){
+        B[kk]=A[kk];
+    }
+    int i=low,j=mid+1,k;
+    for(k=i;  i<=mid && j<=high ; k++ ){
+        if(B[i].key<=B[j].key){
+            A[k]=B[i++];
+        }else{
+            A[k]=B[j++];
+        }
+    }
+    while(i<=mid){
+        A[k++]=B[i++];
+    }
+    while(j<=high){
+        A[k++]=B[j++];
+    }
+}
+void mergSort(elemtype A[], int low,int high){
+    if(low<high){
+        int mid=(low+high)/2;
+        //cout<<"mid = "<<mid<<endl;
+        mergSort(A,low,mid);
+        mergSort(A,mid+1,high);
+        Merge(A,low,mid,high);
+    }
 
 }
-
 
 
 //打印数据
@@ -175,26 +204,28 @@ void printdata(elemtype A[],int n,char* name){
 int main()
 {
     cout << "Hello world 排序算法合集 !" << endl;
-/*
+
     elemtype data2[N] = { {49,1},{38,2},{65,3},{97,4},{76,5},{13,6},{27,7},{49,8},{21,9},{6,10} };
 
     printdata(data2,N,"origin");
     //insertSort(data2,N);
-    insertSort_half(data2,N);
+    //insertSort_half(data2,N);
     //swapSort_bubble(data2,N);//冒泡法
     //quickSort(data2,0,N-1);//
     //selectSort(data2,N);
 
+    mergSort(data2,0,N-1);
+
     printdata(data2,N,"sort result");
 
-*/
 
+
+/*
     elemtype data1[N+1] = { {-1,-1},{49,1},{38,2},{65,3},{97,4},{76,5},{13,6},{27,7},{49,8},{21,9},{6,10} };
     printdata(data1,N+1,"origin");
     HeapSort(data1,N+1);
-
     printdata(data1,N+1,"sort result");
-
+*/
 
     return 0;
 }
